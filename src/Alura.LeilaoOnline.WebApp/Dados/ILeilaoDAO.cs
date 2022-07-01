@@ -14,7 +14,5 @@ namespace Alura.LeilaoOnline.WebApp.Dados
         void Edit(Leilao leilao);
 
         void Delete(Leilao leilao);
-
-        IEnumerable<Categoria> ListCategorias();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Alura.LeilaoOnline.WebApp.Models;
 using Alura.LeilaoOnline.WebApp.Dados;
+using Alura.LeilaoOnline.WebApp.Services;
 
 namespace Alura.LeilaoOnline.WebApp.Controllers
 {
@@ -8,24 +9,24 @@ namespace Alura.LeilaoOnline.WebApp.Controllers
     [Route("/api/leiloes")]
     public class LeilaoApiController : ControllerBase
     {
-        ILeilaoDAO _dao;
+        private IAdminService _service;
 
-        public LeilaoApiController(ILeilaoDAO leilaoDAO)
+        public LeilaoApiController(IAdminService service)
         {
-            _dao = leilaoDAO;
+            _service = service;
         }
 
         [HttpGet]
         public IActionResult EndpointGetLeiloes()
         {
-            var leiloes = _dao.List();
+            var leiloes = _service.GetLeiloes();
             return Ok(leiloes);
         }
 
         [HttpGet("{id}")]
         public IActionResult EndpointGetLeilaoById(int id)
         {
-            var leilao = _dao.GetById(id);
+            var leilao = _service.GetLeilaoById(id);
             if (leilao == null)
             {
                 return NotFound();
@@ -36,26 +37,26 @@ namespace Alura.LeilaoOnline.WebApp.Controllers
         [HttpPost]
         public IActionResult EndpointPostLeilao(Leilao leilao)
         {
-            _dao.Add(leilao);
+            _service.InsertLeilao(leilao);
             return Ok(leilao);
         }
 
         [HttpPut]
         public IActionResult EndpointPutLeilao(Leilao leilao)
         {
-            _dao.Edit(leilao);
+            _service.UpdateLeilao(leilao);
             return Ok(leilao);
         }
 
         [HttpDelete("{id}")]
         public IActionResult EndpointDeleteLeilao(int id)
         {
-            var leilao = _dao.GetById(id);
+            var leilao = _service.GetLeilaoById(id);
             if (leilao == null)
             {
                 return NotFound();
             }
-            _dao.Delete(leilao);
+            _service.DeleteLeilao(id);
             return NoContent();
         }
     }

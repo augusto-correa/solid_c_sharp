@@ -20,7 +20,7 @@ namespace Alura.LeilaoOnline.WebApp.Dados.EFCore
 
         public Leilao GetById(int id)
         {
-            return _context.Leiloes.Find(id);
+            return _context.Leiloes.Include(l => l.Categoria).First(l => l.Id == id);
         }
 
         public void Add(Leilao leilao)
@@ -39,11 +39,6 @@ namespace Alura.LeilaoOnline.WebApp.Dados.EFCore
         {
             _context.Leiloes.Remove(leilao);
             _context.SaveChanges();
-        }
-
-        public IEnumerable<Categoria> ListCategorias()
-        {
-            return _context.Categorias.ToList();
         }
     }
 }
